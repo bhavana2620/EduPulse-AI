@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduPulse AI – Intelligent Student Success Platform</title>
+
+  <!-- PWA Meta Tags -->
+  <link rel="manifest" href="./manifest.json" />
+  <meta name="theme-color" content="#6366f1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Core Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <!-- External Stylesheet -->
+  <link rel="stylesheet" href="aistyle.css" />
+</head>
+<body>
+
+  <!-- Screen Preloader -->
+  <div id="app-preloader" class="app-preloader">
+    <div class="preloader-spinner">
+      <i class="fa-solid fa-graduation-cap"></i>
+    </div>
+    <h3>Loading EduPulse AI OS...</h3>
+  </div>
+
+  <!-- ==========================================
+       LOGIN & REGISTRATION AUTH OVERLAY
+       ========================================== -->
+  <div id="auth-screen" class="auth-wrapper">
+    <div class="glass-card auth-card">
+      <div class="auth-header">
+        <div class="brand-icon auth-logo"><i class="fa-solid fa-graduation-cap"></i></div>
+        <h2>EduPulse <span>AI</span></h2>
+        <p id="auth-subtitle">Sign in to your intelligent student dashboard</p>
+      </div>
+
+      <div class="auth-hint-banner">
+        <div><i class="fa-solid fa-circle-info"></i> <strong>Demo Access:</strong></div>
+        <div>Email: <code>alex@edupulse.ai</code> | Pass: <code>password123</code></div>
+      </div>
+
+      <form id="auth-form">
+        <div class="form-group" id="auth-name-group" style="display: none;">
+          <label for="auth-name">Full Name</label>
+          <div class="input-icon-wrap">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" id="auth-name" class="form-control" placeholder="Alex Vance" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="auth-email">Student Email Address</label>
+          <div class="input-icon-wrap">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" id="auth-email" class="form-control" placeholder="alex@edupulse.ai" required autocomplete="username" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="auth-password">Password</label>
+          <div class="input-icon-wrap">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="auth-password" class="form-control" placeholder="••••••••" required autocomplete="current-password" />
+            <button type="button" class="btn-toggle-pwd" id="toggle-password-vis" aria-label="Toggle Password">
+              <i class="fa-solid fa-eye" id="pwd-eye-icon"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block btn-lg" id="auth-submit-btn">
+          <i class="fa-solid fa-right-to-bracket"></i> Sign In to Platform
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        <span id="auth-toggle-msg">Don't have an account?</span>
+        <button type="button" class="btn-text-link" id="auth-toggle-mode">Create an Account</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MAIN APPLICATION (PROTECTED CONTENT)
+       ========================================== -->
+  <div id="app-container" style="display: none;">
+
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+        <div class="brand-text">
+          <h2>EduPulse <span>AI</span></h2>
+          <span class="brand-sub">STUDENT SUCCESS OS</span>
+        </div>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li class="menu-category">Command Center</li>
+        <li><a href="#landing" class="nav-link active" data-view="landing"><i class="fa-solid fa-compass"></i> <span>Product Portal</span></a></li>
+        <li><a href="#dashboard" class="nav-link" data-view="dashboard"><i class="fa-solid fa-chart-pie"></i> <span>Dashboard</span></a></li>
+        <li><a href="#twin" class="nav-link" data-view="twin"><i class="fa-solid fa-dna"></i> <span>AI Student Twin</span></a></li>
+        <li><a href="#analytics" class="nav-link" data-view="analytics"><i class="fa-solid fa-chart-line"></i> <span>Advanced Analytics</span></a></li>
+
+        <li class="menu-category">AI Intelligence Suite</li>
+        <li><a href="#voice-interview" class="nav-link" data-view="voice-interview"><i class="fa-solid fa-microphone-lines"></i> <span>Voice AI Interview</span></a></li>
+        <li><a href="#planner" class="nav-link" data-view="planner"><i class="fa-solid fa-calendar-check"></i> <span>AI Study Planner</span></a></li>
+        <li><a href="#mentor" class="nav-link" data-view="mentor"><i class="fa-solid fa-comments"></i> <span>AI Career Mentor</span></a></li>
+        <li><a href="#interview" class="nav-link" data-view="interview"><i class="fa-solid fa-laptop-code"></i> <span>AI Mock Simulator</span></a></li>
+        <li><a href="#predictor" class="nav-link" data-view="predictor"><i class="fa-solid fa-brain"></i> <span>Risk & Trajectory AI</span></a></li>
+        <li><a href="#roadmap" class="nav-link" data-view="roadmap"><i class="fa-solid fa-route"></i> <span>Career Roadmap</span></a></li>
+
+        <li class="menu-category">Productivity & Career Ops</li>
+        <li><a href="#calendar" class="nav-link" data-view="calendar"><i class="fa-solid fa-calendar-days"></i> <span>Calendar & Events</span></a></li>
+        <li><a href="#gamification" class="nav-link" data-view="gamification"><i class="fa-solid fa-trophy"></i> <span>XP & Leaderboard</span></a></li>
+        <li><a href="#pomodoro" class="nav-link" data-view="pomodoro"><i class="fa-solid fa-stopwatch-20"></i> <span>Focus Pomodoro</span></a></li>
+        <li><a href="#resume" class="nav-link" data-view="resume"><i class="fa-solid fa-file-shield"></i> <span>ATS Resume Engine</span></a></li>
+        <li><a href="#notes" class="nav-link" data-view="notes"><i class="fa-solid fa-book-bookmark"></i> <span>Notes Knowledge Base</span></a></li>
+        <li><a href="#goals" class="nav-link" data-view="goals"><i class="fa-solid fa-bullseye"></i> <span>Milestone Tracker</span></a></li>
+        <li><a href="#tracker" class="nav-link" data-view="tracker"><i class="fa-solid fa-briefcase"></i> <span>Placement & Intern Hub</span></a></li>
+        <li><a href="#vault" class="nav-link" data-view="vault"><i class="fa-solid fa-award"></i> <span>Certificate Vault</span></a></li>
+
+        <li class="menu-category">Administration & System</li>
+        <li><a href="#profile" class="nav-link" data-view="profile"><i class="fa-solid fa-id-card"></i> <span>Student Profile</span></a></li>
+        <li><a href="#admin" class="nav-link" data-view="admin"><i class="fa-solid fa-shield-halved"></i> <span>Admin Dashboard</span></a></li>
+        <li><a href="#settings" class="nav-link" data-view="settings"><i class="fa-solid fa-gear"></i> <span>Platform Settings</span></a></li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="user-profile-badge">
+          <img id="user-avatar-img" src="https://api.dicebear.com/7.x/bottts/svg?seed=EduPulseAlex" alt="Avatar" />
+          <div class="user-info">
+            <span class="user-name" id="sidebar-user-name">Alex Vance</span>
+            <span class="user-tier" id="sidebar-user-email">alex@edupulse.ai</span>
+          </div>
+        </div>
+        <button class="btn btn-danger btn-block btn-logout" id="logout-btn">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i> Log Out
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN WRAPPER -->
+    <div class="main-wrapper">
+      <header class="header">
+        <div class="header-left">
+          <button class="icon-btn toggle-sidebar" id="toggle-sidebar" aria-label="Toggle Menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="header-title-box">
+            <h3 id="current-view-title">Product Portal</h3>
+            <span class="system-status"><i class="fa-solid fa-circle pulse-dot"></i> Gemini Pro Engine Active</span>
+          </div>
+        </div>
+        <div class="header-right">
+          <button class="btn btn-outline btn-sm" id="pwa-install-btn" style="display:none;">
+            <i class="fa-solid fa-cloud-arrow-down"></i> Install PWA
+          </button>
+          <div class="dropdown-wrap">
+            <button class="icon-btn" id="notif-btn" aria-label="Notifications">
+              <i class="fa-solid fa-bell"></i>
+              <span class="badge-dot" id="notif-badge-dot"></span>
+            </button>
+            <div class="notif-dropdown" id="notif-dropdown">
+              <div class="notif-header">
+                <h5>Notification Center</h5>
+                <button class="btn-text-link" id="clear-notifs-btn">Clear All</button>
+              </div>
+              <div class="notif-list" id="notif-list"></div>
+            </div>
+          </div>
+          <button class="icon-btn theme-switch" id="theme-toggler" aria-label="Toggle Theme">
+            <i class="fa-solid fa-moon" id="theme-icon"></i>
+          </button>
+          <div class="xp-chip" id="header-xp-chip">
+            <i class="fa-solid fa-bolt"></i>
+            <span id="header-xp-val">2,850 XP</span>
+          </div>
+        </div>
+      </header>
+
+      <main class="content">
+
+        <!-- 1. PRODUCT PORTAL -->
+        <section id="view-landing" class="view-section active">
+          <div class="landing-hero glass-card">
+            <span class="badge badge-primary hero-badge"><i class="fa-solid fa-sparkles"></i> The Autonomous Student Operating System</span>
+            <h1>Supercharge Your Engineering Career with <span>Autonomous AI</span></h1>
+            <p>Placement probabilities, real-time voice technical rounds, algorithmic resume ATS audits, and real-time student twin telemetry — unified in one mission-critical workspace.</p>
+            <div class="hero-cta-group">
+              <button class="btn btn-primary btn-lg" onclick="location.hash='#dashboard'">Launch Live Platform</button>
+              <button class="btn btn-outline btn-lg" onclick="location.hash='#voice-interview'"><i class="fa-solid fa-microphone"></i> Test AI Voice Interview</button>
+              <button class="btn btn-outline btn-lg" onclick="location.hash='#twin'"><i class="fa-solid fa-dna"></i> Inspect AI Student Twin</button>
+            </div>
+          </div>
+
+          <div class="features-grid">
+            <div class="glass-card feature-tile clickable-card" onclick="location.hash='#twin'">
+              <div class="tile-icon"><i class="fa-solid fa-dna"></i></div>
+              <h3>AI Student Twin</h3>
+              <p>Continuous digital replica analyzing your CGPA, dynamic skill gaps, and calibrated readiness trajectory.</p>
+              <span class="card-action-link">Open Twin Telemetry <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+            <div class="glass-card feature-tile clickable-card" onclick="location.hash='#voice-interview'">
+              <div class="tile-icon"><i class="fa-solid fa-microphone-lines"></i></div>
+              <h3>Voice AI Mock Simulator</h3>
+              <p>Speech-to-text live rounds evaluating response accuracy, tone variance, and structural clarity in real-time.</p>
+              <span class="card-action-link">Start Voice Round <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+            <div class="glass-card feature-tile clickable-card" onclick="location.hash='#resume'">
+              <div class="tile-icon"><i class="fa-solid fa-file-shield"></i></div>
+              <h3>ATS Resume Optimizer</h3>
+              <p>Live resume document rendering with keyword parsing and one-click PDF generation matching recruiter filters.</p>
+              <span class="card-action-link">Open Resume Builder <i class="fa-solid fa-arrow-right"></i></span>
+            </div>
+          </div>
+
+          <div class="landing-stats-strip glass-card">
+            <div class="stat-unit">
+              <h2>99.4%</h2>
+              <span>Placement Conversion</span>
+            </div>
+            <div class="stat-unit">
+              <h2>150k+</h2>
+              <span>Problems Solved</span>
+            </div>
+            <div class="stat-unit">
+              <h2>4.9/5</h2>
+              <span>Student Satisfaction</span>
+            </div>
+            <div class="stat-unit">
+              <h2>&lt; 45ms</h2>
+              <span>Inference Latency</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. EXECUTIVE DASHBOARD -->
+        <section id="view-dashboard" class="view-section">
+          <div class="section-banner">
+            <div>
+              <h2>Welcome back, <span id="banner-user-name">Alex</span>! 👋</h2>
+              <p>Your academic momentum score is in the top <strong>5%</strong> of engineering cohorts this semester.</p>
+            </div>
+            <div class="action-btns">
+              <button class="btn btn-outline" id="export-dash-pdf"><i class="fa-solid fa-file-pdf"></i> Export Executive Report</button>
+              <button class="btn btn-primary" onclick="location.hash='#planner'"><i class="fa-solid fa-sparkles"></i> AI Plan Optimizer</button>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="glass-card stat-card">
+              <div class="stat-icon color-indigo"><i class="fa-solid fa-clock-rotate-left"></i></div>
+              <div class="stat-details">
+                <div class="stat-val"><span class="animated-counter" data-target="42.5">42.5</span><small>hrs</small></div>
+                <div class="stat-lbl">Study Hours This Week</div>
+                <div class="stat-trend positive"><i class="fa-solid fa-arrow-trend-up"></i> +14% vs last week</div>
+              </div>
+            </div>
+            <div class="glass-card stat-card">
+              <div class="stat-icon color-emerald"><i class="fa-solid fa-gauge-high"></i></div>
+              <div class="stat-details">
+                <div class="stat-val"><span class="animated-counter" data-target="94">94</span><small>%</small></div>
+                <div class="stat-lbl">Productivity Score</div>
+                <div class="stat-trend positive"><i class="fa-solid fa-arrow-trend-up"></i> Optimal focus range</div>
+              </div>
+            </div>
+            <div class="glass-card stat-card">
+              <div class="stat-icon color-amber"><i class="fa-solid fa-briefcase"></i></div>
+              <div class="stat-details">
+                <div class="stat-val"><span class="animated-counter" data-target="88">88</span><small>/100</small></div>
+                <div class="stat-lbl">Placement Readiness</div>
+                <div class="stat-trend positive"><i class="fa-solid fa-check"></i> High conversion index</div>
+              </div>
+            </div>
+            <div class="glass-card stat-card">
+              <div class="stat-icon color-rose"><i class="fa-solid fa-fire"></i></div>
+              <div class="stat-details">
+                <div class="stat-val"><span class="animated-counter" id="dash-streak-count" data-target="18">18</span><small>days</small></div>
+                <div class="stat-lbl">Active Coding Streak</div>
+                <div class="stat-trend warning"><i class="fa-solid fa-bolt"></i> Personal best record!</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chart-grid">
+            <div class="glass-card chart-box">
+              <div class="card-header">
+                <div>
+                  <h4>Weekly Study & Practice Volume</h4>
+                  <p class="card-sub">Daily breakdown of theoretical vs problem-solving hours</p>
+                </div>
+                <span class="badge badge-primary">Dynamic Feed</span>
+              </div>
+              <div class="canvas-container">
+                <canvas id="weeklyActivityChart"></canvas>
+              </div>
+            </div>
+            <div class="glass-card chart-box">
+              <div class="card-header">
+                <div>
+                  <h4>Skill Benchmark Radar</h4>
+                  <p class="card-sub">Current profile evaluation against Tier-1 SDE roles</p>
+                </div>
+                <span class="badge badge-secondary">Real-Time</span>
+              </div>
+              <div class="canvas-container">
+                <canvas id="skillRadarChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-sub-grid">
+            <div class="glass-card">
+              <div class="card-header">
+                <h4>Study Activity Heatmap</h4>
+                <span class="badge badge-success">Last 12 Weeks</span>
+              </div>
+              <div class="heatmap-grid" id="study-heatmap"></div>
+              <div class="heatmap-legend">
+                <span>Less</span>
+                <span class="cell lvl-0"></span>
+                <span class="cell lvl-1"></span>
+                <span class="cell lvl-2"></span>
+                <span class="cell lvl-3"></span>
+                <span>More Activity</span>
+              </div>
+            </div>
+
+            <div class="glass-card">
+              <div class="card-header">
+                <h4>Unlocked Milestones & Badges</h4>
+                <span class="badge badge-warning" id="dash-badges-count">6 Earned</span>
+              </div>
+              <div class="badges-flex" id="dash-badges-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. SMART AI STUDENT TWIN -->
+        <section id="view-twin" class="view-section">
+          <div class="twin-wrapper">
+            <div class="glass-card twin-hero-card">
+              <div class="twin-overview">
+                <div class="twin-avatar-box">
+                  <i class="fa-solid fa-dna pulse-icon"></i>
+                  <span class="twin-version">Digital Twin v3.4 Active</span>
+                </div>
+                <div class="twin-meta">
+                  <h3>Student Cognitive Replica</h3>
+                  <p>Synthesized representation of academic records, algorithmic mastery, technical mock assessments, and interview sentiment.</p>
+                </div>
+              </div>
+              <div class="twin-gauges-grid">
+                <div class="twin-gauge-box">
+                  <div class="gauge-title">Placement Probability</div>
+                  <div class="gauge-value text-success" id="twin-placement-prob">89%</div>
+                  <span class="gauge-sub">Top Tier Product Firm Eligible</span>
+                </div>
+                <div class="twin-gauge-box">
+                  <div class="gauge-title">CGPA Analysis</div>
+                  <div class="gauge-value text-primary" id="twin-cgpa">8.84</div>
+                  <span class="gauge-sub">Percentile: 94.2% across branch</span>
+                </div>
+                <div class="twin-gauge-box">
+                  <div class="gauge-title">Composite Readiness</div>
+                  <div class="gauge-value text-warning" id="twin-readiness">91/100</div>
+                  <span class="gauge-sub">Interview Calibration Index</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="twin-split-grid">
+              <div class="glass-card">
+                <div class="card-header">
+                  <h4><i class="fa-solid fa-triangle-exclamation text-warning"></i> Skill Gap Detection</h4>
+                  <span class="badge badge-primary">Industry Benchmarks</span>
+                </div>
+                <div class="skill-gap-list" id="twin-skill-gaps"></div>
+              </div>
+              <div class="glass-card">
+                <div class="card-header">
+                  <h4><i class="fa-solid fa-lightbulb text-primary"></i> Personalized Interventions</h4>
+                  <span class="badge badge-success">AI Directed</span>
+                </div>
+                <div class="recommendations-list" id="twin-recommendations"></div>
+              </div>
+            </div>
+
+            <div class="glass-card">
+              <div class="card-header">
+                <h4><i class="fa-solid fa-route"></i> Weekly Adaptive Improvement Roadmap</h4>
+                <button class="btn btn-outline btn-sm" id="btn-sync-twin-roadmap"><i class="fa-solid fa-rotate"></i> Recalibrate Roadmap</button>
+              </div>
+              <div class="twin-roadmap-timeline" id="twin-roadmap-container"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. ADVANCED ANALYTICS -->
+        <section id="view-analytics" class="view-section">
+          <div class="analytics-wrapper">
+            <div class="glass-card mb-4">
+              <div class="card-header">
+                <div>
+                  <h4>Deep Cohort & Behavioral Telemetry</h4>
+                  <p class="card-sub">Longitudinal academic momentum, problem distribution, and interview variance.</p>
+                </div>
+                <button class="btn btn-outline" id="btn-export-analytics-pdf"><i class="fa-solid fa-file-pdf"></i> Export Analytics PDF</button>
+              </div>
+            </div>
+
+            <div class="analytics-charts-grid">
+              <div class="glass-card chart-box">
+                <div class="card-header">
+                  <h4>Placement Readiness Trajectory</h4>
+                  <span class="badge badge-success">6-Month Trend</span>
+                </div>
+                <div class="canvas-container">
+                  <canvas id="chart-readiness-trend"></canvas>
+                </div>
+              </div>
+              <div class="glass-card chart-box">
+                <div class="card-header">
+                  <h4>Skill Growth Progression</h4>
+                  <span class="badge badge-primary">Domain Fluency</span>
+                </div>
+                <div class="canvas-container">
+                  <canvas id="chart-skill-growth"></canvas>
+                </div>
+              </div>
+              <div class="glass-card chart-box">
+                <div class="card-header">
+                  <h4>Study Consistency & Flow Velocity</h4>
+                  <span class="badge badge-secondary">Weekly Hours</span>
+                </div>
+                <div class="canvas-container">
+                  <canvas id="chart-study-consistency"></canvas>
+                </div>
+              </div>
+              <div class="glass-card chart-box">
+                <div class="card-header">
+                  <h4>Milestone & Goal Completion</h4>
+                  <span class="badge badge-warning">Task Velocity</span>
+                </div>
+                <div class="canvas-container">
+                  <canvas id="chart-goal-completion"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. AI VOICE INTERVIEW ASSISTANT -->
+        <section id="view-voice-interview" class="view-section">
+          <div class="interview-layout">
+            <div class="glass-card">
+              <div class="card-header">
+                <div>
+                  <h4>AI Voice Interview Assistant</h4>
+                  <p class="card-sub">Live Speech-to-Text, Voice synthesis, real-time sentiment, and technical rubric audit.</p>
+                </div>
+                <div class="track-select-box">
+                  <select id="voice-interview-track" class="form-control">
+                    <option value="frontend">Frontend Architecture (React/JS)</option>
+                    <option value="dsa">DSA & Algorithmic Scalability</option>
+                    <option value="java">Enterprise Backend (Java/Spring)</option>
+                    <option value="system">Distributed System Design</option>
+                    <option value="hr">Executive Behavioral (STAR Method)</option>
+                  </select>
+                  <button class="btn btn-outline" id="voice-next-q-btn"><i class="fa-solid fa-forward-step"></i> Next Question</button>
+                </div>
+              </div>
+
+              <div class="voice-question-stage">
+                <span class="question-tag"><i class="fa-solid fa-volume-high"></i> Active Spoken Prompt</span>
+                <h3 id="voice-q-text" class="voice-q-prompt">Click "Next Question" to summon an enterprise interviewer prompt.</h3>
+                <button class="btn btn-outline btn-sm" id="voice-speak-prompt-btn"><i class="fa-solid fa-volume-low"></i> Read Prompt Aloud (TTS)</button>
+              </div>
+
+              <div class="voice-controls-panel">
+                <div class="mic-status-indicator">
+                  <div class="mic-wave" id="mic-wave-pulse">
+                    <span></span><span></span><span></span><span></span><span></span>
+                  </div>
+                  <span id="voice-recording-status">Microphone Idle</span>
+                </div>
+                <div class="voice-action-row">
+                  <button class="btn btn-primary btn-lg" id="btn-toggle-recording">
+                    <i class="fa-solid fa-microphone"></i> Start Recording Answer
+                  </button>
+                  <button class="btn btn-outline btn-lg" id="btn-clear-transcript">
+                    <i class="fa-solid fa-eraser"></i> Clear
+                  </button>
+                </div>
+              </div>
+
+              <div class="form-group mt-3">
+                <label>Speech-to-Text Live Transcript (Auto-Captured or Editable):</label>
+                <textarea id="voice-transcript-area" class="form-control text-area" rows="5" placeholder="Your spoken words will transcribe here in real-time. You may also fine-tune via keyboard..."></textarea>
+              </div>
+
+              <button class="btn btn-primary btn-block btn-lg" id="btn-eval-voice">
+                <i class="fa-solid fa-brain"></i> Evaluate Voice Answer with AI
+              </button>
+
+              <div id="voice-eval-card" class="feedback-panel mt-3"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. USER PROFILE SYSTEM -->
+        <section id="view-profile" class="view-section">
+          <div class="profile-layout">
+            <div class="glass-card profile-summary-card">
+              <div class="profile-avatar-uploader">
+                <img id="profile-card-img" src="https://api.dicebear.com/7.x/bottts/svg?seed=EduPulseAlex" alt="Avatar" />
+                <label for="profile-avatar-file" class="btn-avatar-upload" title="Change Avatar">
+                  <i class="fa-solid fa-camera"></i>
+                </label>
+                <input type="file" id="profile-avatar-file" accept="image/*" style="display:none;" />
+              </div>
+              <h3 id="profile-card-name" class="mt-2">Alex Vance</h3>
+              <p class="text-muted" id="profile-card-role">Computer Science Engineering</p>
+              
+              <div class="profile-progress-block">
+                <div class="d-flex justify-content-between mb-1">
+                  <span class="font-bold text-xs">Profile Completion</span>
+                  <span class="font-bold text-xs" id="profile-completion-pct">85%</span>
+                </div>
+                <div class="progress-bar-bg">
+                  <div class="progress-bar-fill" id="profile-completion-bar" style="width: 85%;"></div>
+                </div>
+              </div>
+
+              <div class="profile-badges-strip mt-3" id="profile-badges-preview"></div>
+            </div>
+
+            <div class="glass-card profile-form-card">
+              <div class="card-header">
+                <h4>Academic & Professional Identity</h4>
+                <button class="btn btn-primary btn-sm" id="btn-save-profile"><i class="fa-solid fa-floppy-disk"></i> Save Profile</button>
+              </div>
+              <form id="student-profile-form">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="prof-name" class="form-control" value="Alex Vance" required />
+                  </div>
+                  <div class="form-group">
+                    <label>Institutional Email</label>
+                    <input type="email" id="prof-email" class="form-control" value="alex@edupulse.ai" required />
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>College / University</label>
+                    <input type="text" id="prof-college" class="form-control" value="National Institute of Technology" />
+                  </div>
+                  <div class="form-group">
+                    <label>Department / Branch</label>
+                    <input type="text" id="prof-branch" class="form-control" value="Computer Science & Engineering" />
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Cumulative CGPA</label>
+                    <input type="number" step="0.01" min="0" max="10" id="prof-cgpa" class="form-control" value="8.84" />
+                  </div>
+                  <div class="form-group">
+                    <label>Graduation Year</label>
+                    <input type="number" id="prof-grad-year" class="form-control" value="2027" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label>Primary Technical Skills (Comma Separated)</label>
+                  <input type="text" id="prof-skills" class="form-control" value="Java, Spring Boot, React, TypeScript, Python, Docker, Redis, DSA" />
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label><i class="fa-brands fa-github"></i> GitHub Profile URL</label>
+                    <input type="url" id="prof-github" class="form-control" value="https://github.com/alexvance" />
+                  </div>
+                  <div class="form-group">
+                    <label><i class="fa-brands fa-linkedin"></i> LinkedIn Profile URL</label>
+                    <input type="url" id="prof-linkedin" class="form-control" value="https://linkedin.com/in/alexvance" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label><i class="fa-solid fa-file-arrow-up"></i> Upload Master Resume (PDF)</label>
+                  <input type="file" id="prof-resume-file" class="form-control" accept=".pdf,.doc,.docx" />
+                  <small class="text-muted" id="prof-resume-name">Current active resume: Alex_Vance_Resume_Tier1.pdf</small>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- 7. ACHIEVEMENTS & GAMIFICATION -->
+        <section id="view-gamification" class="view-section">
+          <div class="gamification-wrapper">
+            <div class="gamification-hero glass-card">
+              <div class="gamify-stat">
+                <i class="fa-solid fa-bolt text-warning"></i>
+                <div>
+                  <h3 id="gamify-xp-val">2,850</h3>
+                  <span>Total XP Points</span>
+                </div>
+              </div>
+              <div class="gamify-stat">
+                <i class="fa-solid fa-crown text-primary"></i>
+                <div>
+                  <h3 id="gamify-level-val">Level 6</h3>
+                  <span>Full-Stack Contender</span>
+                </div>
+              </div>
+              <div class="gamify-stat">
+                <i class="fa-solid fa-fire text-rose"></i>
+                <div>
+                  <h3 id="gamify-streak-val">18 Days</h3>
+                  <span>Active Study Streak</span>
+                </div>
+              </div>
+              <div class="gamify-stat">
+                <i class="fa-solid fa-medal text-success"></i>
+                <div>
+                  <h3 id="gamify-badges-val">6 Badges</h3>
+                  <span>Earned Accolades</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="gamify-split-grid">
+              <div class="glass-card">
+                <div class="card-header">
+                  <h4>Badge Showroom</h4>
+                  <span class="badge badge-primary">Milestones</span>
+                </div>
+                <div class="badges-wall-grid" id="gamify-badges-wall"></div>
+              </div>
+
+              <div class="glass-card">
+                <div class="card-header">
+                  <h4>Campus & Global Student Leaderboard</h4>
+                  <span class="badge badge-success">Live Cohort Sync</span>
+                </div>
+                <div class="leaderboard-table-wrap">
+                  <table class="leaderboard-table">
+                    <thead>
+                      <tr>
+                        <th>Rank</th>
+                        <th>Student</th>
+                        <th>Level</th>
+                        <th>XP</th>
+                        <th>Streak</th>
+                      </tr>
+                    </thead>
+                    <tbody id="gamify-leaderboard-body"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 8. CALENDAR & SCHEDULING -->
+        <section id="view-calendar" class="view-section">
+          <div class="calendar-wrapper">
+            <div class="glass-card calendar-sidebar-box">
+              <div class="card-header">
+                <h4>Event Quick Dispatch</h4>
+              </div>
+              <form id="calendar-add-form">
+                <div class="form-group">
+                  <label>Event Name</label>
+                  <input type="text" id="cal-event-title" class="form-control" placeholder="e.g. Google OA Mock Simulation" required />
+                </div>
+                <div class="form-group">
+                  <label>Category</label>
+                  <select id="cal-event-category" class="form-control">
+                    <option value="Interview">AI Voice Mock Interview</option>
+                    <option value="Placement">Placement Test / Drive</option>
+                    <option value="Study">Study Session Block</option>
+                    <option value="Deadline">Submission Deadline</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Date & Time</label>
+                  <input type="datetime-local" id="cal-event-date" class="form-control" required />
+                </div>
+                <button type="submit" class="btn btn-primary btn-block"><i class="fa-solid fa-calendar-plus"></i> Schedule Milestone</button>
+              </form>
+            </div>
+
+            <div class="glass-card calendar-display-box">
+              <div class="card-header">
+                <h4>Scheduled Timeline & Deadlines</h4>
+                <div class="filter-pills">
+                  <button class="chip active" onclick="filterCalendar('ALL')">All</button>
+                  <button class="chip" onclick="filterCalendar('Interview')">Interviews</button>
+                  <button class="chip" onclick="filterCalendar('Placement')">Placements</button>
+                  <button class="chip" onclick="filterCalendar('Study')">Study</button>
+                </div>
+              </div>
+              <div class="calendar-events-list" id="calendar-events-list"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 9. RESUME INTELLIGENCE & ATS REVIEW -->
+        <section id="view-resume" class="view-section">
+          <div class="resume-workspace">
+            <div class="glass-card resume-controls">
+              <div class="card-header">
+                <h4>Candidate ATS Parameters</h4>
+                <div class="action-btns">
+                  <button class="btn btn-outline" id="resume-analyze-btn"><i class="fa-solid fa-microchip"></i> Deep ATS Scan</button>
+                  <button class="btn btn-primary" id="resume-export-btn"><i class="fa-solid fa-file-arrow-down"></i> Export PDF</button>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Target Job Description / Keywords to Match Against:</label>
+                <textarea id="res-target-jd" class="form-control text-area" rows="3" placeholder="Paste target JD here to calculate match percentage and missing keywords..."></textarea>
+              </div>
+              <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="res-name" class="form-control" value="Alex Vance" />
+              </div>
+              <div class="form-group">
+                <label>Target Job Title</label>
+                <input type="text" id="res-role" class="form-control" value="Senior Full Stack Software Development Engineer" />
+              </div>
+              <div class="form-group">
+                <label>Contact Details</label>
+                <input type="text" id="res-contact" class="form-control" value="alex@edupulse.ai | +1 (555) 019-2834 | github.com/alexvance | San Francisco, CA" />
+              </div>
+              <div class="form-group">
+                <label>Core Technical Stack (Comma Separated)</label>
+                <input type="text" id="res-skills" class="form-control" value="Java, Spring Boot, React 18, TypeScript, PostgreSQL, Redis, Docker, AWS, Git" />
+              </div>
+              <div class="form-group">
+                <label>Experience & Achievement Highlights</label>
+                <textarea id="res-exp" class="form-control text-area" rows="6">• Engineered an asynchronous notification pipeline utilizing Redis Streams and Node.js, reducing latency by 42%.
+• Designed and shipped responsive React microfrontends with state optimization, boosting Google Lighthouse scores from 68 to 96.
+• Automated end-to-end continuous deployment testing with GitHub Actions and Docker, reducing deployment overhead by 5 hours weekly.</textarea>
+              </div>
+              <div class="form-group">
+                <label>Education & Degrees</label>
+                <input type="text" id="res-edu" class="form-control" value="B.S. in Computer Science Engineering | Tech State University | GPA: 3.88/4.00 (Expected May 2027)" />
+              </div>
+            </div>
+
+            <div class="resume-paper-wrapper">
+              <!-- Live ATS Intelligence Panel -->
+              <div class="glass-card ats-score-banner mb-3" id="ats-intelligence-report" style="display:none;">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="ats-circle-score" id="ats-score-display">94</span>
+                    <div>
+                      <h4 class="mb-0">ATS Quality Score</h4>
+                      <small class="text-muted" id="ats-verdict">Exceptional recruiter readability</small>
+                    </div>
+                  </div>
+                  <button class="btn btn-outline btn-sm" id="btn-download-ats-report"><i class="fa-solid fa-download"></i> Download Audit</button>
+                </div>
+                <div class="ats-keywords-block mt-2">
+                  <label class="text-xs font-bold text-muted">Detected Missing Target Keywords:</label>
+                  <div class="tag-flex mt-1" id="ats-missing-tags"></div>
+                </div>
+              </div>
+
+              <div class="resume-paper" id="resume-preview-doc">
+                <div class="rp-header">
+                  <h1 id="prev-name">Alex Vance</h1>
+                  <h3 id="prev-role">Senior Full Stack Software Development Engineer</h3>
+                  <div class="rp-contact" id="prev-contact">alex@edupulse.ai | +1 (555) 019-2834 | github.com/alexvance | San Francisco, CA</div>
+                </div>
+
+                <div class="rp-section">
+                  <h4 class="rp-title">CORE TECHNICAL SKILLS</h4>
+                  <div class="rp-skills" id="prev-skills">Java, Spring Boot, React 18, TypeScript, PostgreSQL, Redis, Docker, AWS, Git</div>
+                </div>
+
+                <div class="rp-section">
+                  <h4 class="rp-title">PROJECT HIGHLIGHTS & WORK EXPERIENCE</h4>
+                  <div class="rp-body" id="prev-exp" style="white-space: pre-line;">• Engineered an asynchronous notification pipeline utilizing Redis Streams and Node.js, reducing latency by 42%.
+• Designed and shipped responsive React microfrontends with state optimization, boosting Google Lighthouse scores from 68 to 96.
+• Automated end-to-end continuous deployment testing with GitHub Actions and Docker, reducing deployment overhead by 5 hours weekly.</div>
+                </div>
+
+                <div class="rp-section">
+                  <h4 class="rp-title">EDUCATION & ACADEMICS</h4>
+                  <div class="rp-body" id="prev-edu">B.S. in Computer Science Engineering | Tech State University | GPA: 3.88/4.00 (Expected May 2027)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 10. ADMIN DASHBOARD -->
+        <section id="view-admin" class="view-section">
+          <div class="admin-wrapper">
+            <div class="section-banner">
+              <div>
+                <h2>Enterprise Administration OS 🛡️</h2>
+                <p>Telemetry aggregate across campus cohorts, system throughput, and AI API quotas.</p>
+              </div>
+              <span class="badge badge-success"><i class="fa-solid fa-database"></i> Firestore Active</span>
+            </div>
+
+            <div class="stats-grid">
+              <div class="glass-card stat-card">
+                <div class="stat-icon color-indigo"><i class="fa-solid fa-users"></i></div>
+                <div class="stat-details">
+                  <div class="stat-val"><span class="animated-counter" data-target="1420">1,420</span></div>
+                  <div class="stat-lbl">Total Registered Students</div>
+                  <div class="stat-trend positive"><i class="fa-solid fa-arrow-trend-up"></i> +8.4% this month</div>
+                </div>
+              </div>
+              <div class="glass-card stat-card">
+                <div class="stat-icon color-emerald"><i class="fa-solid fa-user-check"></i></div>
+                <div class="stat-details">
+                  <div class="stat-val"><span class="animated-counter" data-target="864">864</span></div>
+                  <div class="stat-lbl">Daily Active Users</div>
+                  <div class="stat-trend positive"><i class="fa-solid fa-arrow-trend-up"></i> 60.8% retention</div>
+                </div>
+              </div>
+              <div class="glass-card stat-card">
+                <div class="stat-icon color-amber"><i class="fa-solid fa-file-lines"></i></div>
+                <div class="stat-details">
+                  <div class="stat-val"><span class="animated-counter" data-target="4912">4,912</span></div>
+                  <div class="stat-lbl">Resume ATS Audits</div>
+                  <div class="stat-trend positive"><i class="fa-solid fa-microchip"></i> 99.8% parsed</div>
+                </div>
+              </div>
+              <div class="glass-card stat-card">
+                <div class="stat-icon color-rose"><i class="fa-solid fa-microphone"></i></div>
+                <div class="stat-details">
+                  <div class="stat-val"><span class="animated-counter" data-target="2180">2,180</span></div>
+                  <div class="stat-lbl">Voice Mock Attempts</div>
+                  <div class="stat-trend positive"><i class="fa-solid fa-check"></i> 89.2% passing index</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="chart-grid">
+              <div class="glass-card chart-box">
+                <div class="card-header">
+                  <h4>Platform Compute & AI Token Consumption</h4>
+                  <span class="badge badge-primary">Gemini 1.5 API</span>
+                </div>
+                <div class="canvas-container">
+                  <canvas id="adminSystemMetricsChart"></canvas>
+                </div>
+              </div>
+
+              <div class="glass-card">
+                <div class="card-header">
+                  <h4>Recent System Audits & Security Logs</h4>
+                  <span class="badge badge-secondary">Real-Time</span>
+                </div>
+                <div class="audit-log-list" id="admin-audit-logs"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 11. PLATFORM SETTINGS -->
+        <section id="view-settings" class="view-section">
+          <div class="settings-wrapper">
+            <div class="glass-card">
+              <div class="card-header">
+                <h4>Platform & Runtime Preferences</h4>
+                <button class="btn btn-primary btn-sm" id="btn-save-settings"><i class="fa-solid fa-floppy-disk"></i> Save Preferences</button>
+              </div>
+
+              <div class="settings-group">
+                <h5>Appearance & Display</h5>
+                <div class="setting-row">
+                  <div>
+                    <strong>Interface Theme</strong>
+                    <p class="text-muted">Choose between high-contrast dark glass or clean light glass</p>
+                  </div>
+                  <select id="setting-theme-select" class="form-control" style="width:160px;">
+                    <option value="dark">Dark Theme</option>
+                    <option value="light">Light Theme</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="settings-group">
+                <h5>Notification Triggers</h5>
+                <div class="setting-row">
+                  <div>
+                    <strong>Placement Drive Alerts</strong>
+                    <p class="text-muted">Receive alerts when Tier-1 companies start campus shortlisting</p>
+                  </div>
+                  <input type="checkbox" id="setting-notif-placement" checked class="custom-toggle" />
+                </div>
+                <div class="setting-row">
+                  <div>
+                    <strong>Voice Interview Reminders</strong>
+                    <p class="text-muted">Automated prompts to complete weekly mock simulations</p>
+                  </div>
+                  <input type="checkbox" id="setting-notif-interview" checked class="custom-toggle" />
+                </div>
+                <div class="setting-row">
+                  <div>
+                    <strong>Pomodoro & Study Reminders</strong>
+                    <p class="text-muted">Notifications to sustain daily coding streaks</p>
+                  </div>
+                  <input type="checkbox" id="setting-notif-study" checked class="custom-toggle" />
+                </div>
+              </div>
+
+              <div class="settings-group">
+                <h5>Real AI Engine API Configuration</h5>
+                <div class="setting-row">
+                  <div>
+                    <strong>Google Gemini / OpenAI API Key</strong>
+                    <p class="text-muted">Enter your custom API key for unmetered live AI inferences (Optional)</p>
+                  </div>
+                  <input type="password" id="setting-ai-key" class="form-control" placeholder="AIzaSy... or sk-..." style="width:280px;" />
+                </div>
+              </div>
+
+              <div class="settings-group">
+                <h5>Security & Account</h5>
+                <div class="setting-row">
+                  <div>
+                    <strong>Clear Local Storage Cache</strong>
+                    <p class="text-muted">Reset locally cached sessions and re-initialize demo data</p>
+                  </div>
+                  <button class="btn btn-danger btn-sm" id="btn-purge-storage"><i class="fa-solid fa-trash-can"></i> Purge Storage</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 12. AI STUDY PLANNER -->
+        <section id="view-planner" class="view-section">
+          <div class="planner-layout">
+            <div class="glass-card">
+              <div class="card-header">
+                <h4>Dynamic Plan Generator</h4>
+              </div>
+              <form id="study-planner-form">
+                <div class="form-group">
+                  <label>Subject / Tech Stack Target</label>
+                  <input type="text" id="plan-subject" class="form-control" value="Distributed Microservices & Spring Cloud" required />
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Days Until Exam / Target</label>
+                    <input type="number" id="plan-days" class="form-control" value="21" required />
+                  </div>
+                  <div class="form-group">
+                    <label>Daily Allocated Hours</label>
+                    <input type="number" id="plan-hours" class="form-control" value="4" required />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Mastery Goal Difficulty</label>
+                  <select id="plan-difficulty" class="form-control">
+                    <option value="Fundamental">Foundational Competency</option>
+                    <option value="Advanced" selected>High GPA / Placement Grade</option>
+                    <option value="Mastery">System Architect / Mastery</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">
+                  <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Optimized Schedule
+                </button>
+              </form>
+            </div>
+
+            <div class="glass-card" id="planner-output-card">
+              <div class="card-header">
+                <h4>AI Strategy Roadmap Breakdown</h4>
+                <div class="action-btns">
+                  <button class="btn btn-outline btn-sm" id="btn-export-plan-pdf"><i class="fa-solid fa-file-pdf"></i> Export Plan</button>
+                  <span class="badge badge-success" id="plan-success-badge">Calculated Probability: 92%</span>
+                </div>
+              </div>
+              <div id="planner-results" class="strategy-display"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 13. AI CAREER MENTOR -->
+        <section id="view-mentor" class="view-section">
+          <div class="glass-card mentor-chat-card">
+            <div class="chat-header">
+              <div class="mentor-avatar"><i class="fa-solid fa-brain"></i></div>
+              <div>
+                <h4>EduPulse Career AI Advisor</h4>
+                <p>Powered by Real-Time Generative AI with live engineering roadmaps and placement benchmarks.</p>
+              </div>
+              <div class="quick-prompts">
+                <button class="chip" onclick="askPredefined('What are the most asked Java backend interview questions?')">Java Interview</button>
+                <button class="chip" onclick="askPredefined('How do I structure my resume for Tier-1 placements?')">Resume STAR</button>
+                <button class="chip" onclick="askPredefined('What is Python?')">What is Python?</button>
+              </div>
+            </div>
+
+            <div class="chat-messages" id="mentor-messages">
+              <div class="chat-msg bot">
+                <div class="msg-avatar"><i class="fa-solid fa-robot"></i></div>
+                <div class="msg-bubble">
+                  <strong>EduPulse AI:</strong> Greetings! I'm your dedicated career strategist. Ask me anything regarding your resume bullets, tech stacks, or how to clear system design rounds!
+                </div>
+              </div>
+            </div>
+
+            <form id="mentor-form" class="chat-input-bar">
+              <input type="text" id="mentor-input" class="form-control" placeholder="Ask about Python, placements, interview questions, or roadmaps..." autocomplete="off" required />
+              <button type="submit" class="btn btn-primary" id="mentor-submit-btn">
+                <i class="fa-solid fa-paper-plane"></i>
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <!-- 14. AI MOCK SIMULATOR (CODE/TEXT ROUND) -->
+        <section id="view-interview" class="view-section">
+          <div class="interview-layout">
+            <div class="glass-card">
+              <div class="card-header">
+                <h4>Simulated Technical Interview</h4>
+                <div class="track-select-box">
+                  <select id="interview-track" class="form-control">
+                    <option value="frontend">Frontend Engineering (JS/React)</option>
+                    <option value="dsa">DSA & Computational Logic</option>
+                    <option value="java">Enterprise Java Backend</option>
+                    <option value="hr">HR & Leadership Behavioral</option>
+                  </select>
+                  <button class="btn btn-outline" id="start-interview-btn"><i class="fa-solid fa-shuffle"></i> Next Question</button>
+                </div>
+              </div>
+
+              <div class="interview-question-container">
+                <span class="question-tag"><i class="fa-solid fa-circle-question"></i> Active Prompt</span>
+                <div id="interview-question-box" class="question-text">
+                  Click "Next Question" to pull a vetted interview prompt from the bank.
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Your Detailed Solution / Response:</label>
+                <textarea id="interview-answer" class="form-control text-area" rows="6" placeholder="Format your explanation clearly, discussing tradeoffs, algorithmic complexity, and structure..."></textarea>
+              </div>
+
+              <div class="d-flex gap-2">
+                <button class="btn btn-primary" id="evaluate-interview-btn">
+                  <i class="fa-solid fa-circle-check"></i> Evaluate Technical Answer
+                </button>
+                <button class="btn btn-outline" id="btn-export-interview-pdf">
+                  <i class="fa-solid fa-file-pdf"></i> Export Scorecard PDF
+                </button>
+              </div>
+
+              <div id="interview-feedback" class="feedback-panel"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 15. FOCUS POMODORO -->
+        <section id="view-pomodoro" class="view-section">
+          <div class="pomodoro-wrapper">
+            <div class="glass-card pomodoro-card">
+              <div class="mode-toggles">
+                <button class="mode-btn active" id="pomo-mode-work">Focus Sprint (25m)</button>
+                <button class="mode-btn" id="pomo-mode-break">Recharge Break (5m)</button>
+              </div>
+
+              <div class="timer-display-ring">
+                <div class="timer-display" id="pomo-timer">25:00</div>
+                <span class="timer-subtext" id="timer-state-label">Concentration Phase</span>
+              </div>
+
+              <div class="timer-actions">
+                <button class="btn btn-primary btn-lg" id="pomo-start"><i class="fa-solid fa-play"></i> Start Session</button>
+                <button class="btn btn-outline btn-lg" id="pomo-pause"><i class="fa-solid fa-pause"></i> Pause</button>
+                <button class="btn btn-danger btn-lg" id="pomo-reset"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+              </div>
+
+              <div class="pomo-stats-strip">
+                <div>
+                  <span class="pomo-val" id="pomo-session-count">0</span>
+                  <span class="pomo-lbl">Sprints Done</span>
+                </div>
+                <div>
+                  <span class="pomo-val" id="pomo-total-focus">0 hrs</span>
+                  <span class="pomo-lbl">Focus Time</span>
+                </div>
+                <div>
+                  <span class="pomo-val">+150</span>
+                  <span class="pomo-lbl">XP Gained</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 16. NOTES MANAGER -->
+        <section id="view-notes" class="view-section">
+          <div class="notes-layout">
+            <div class="glass-card">
+              <div class="card-header">
+                <h4>Save Academic Note</h4>
+              </div>
+              <form id="note-form">
+                <div class="form-group">
+                  <label>Note Title</label>
+                  <input type="text" id="note-title" class="form-control" placeholder="e.g. CAP Theorem Tradeoffs" required />
+                </div>
+                <div class="form-group">
+                  <label>Topic Category</label>
+                  <select id="note-category" class="form-control">
+                    <option value="DSA">Data Structures & Algorithms</option>
+                    <option value="System Design">System Architecture</option>
+                    <option value="Database">Database Management</option>
+                    <option value="Academic">University Subject</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Markdown / Note Contents</label>
+                  <textarea id="note-content" class="form-control text-area" rows="5" placeholder="Record key formulas, interview cheat notes, or concepts..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block"><i class="fa-solid fa-bookmark"></i> Persist to Notebook</button>
+              </form>
+            </div>
+
+            <div class="glass-card">
+              <div class="card-header">
+                <h4>Repository Notes (<span id="notes-count">0</span>)</h4>
+                <div class="filter-pills">
+                  <button class="chip active" onclick="filterNotes('ALL')">All</button>
+                  <button class="chip" onclick="filterNotes('DSA')">DSA</button>
+                  <button class="chip" onclick="filterNotes('System Design')">Architecture</button>
+                </div>
+              </div>
+              <div id="notes-list" class="notes-grid"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 17. CAREER ROADMAP GENERATOR -->
+        <section id="view-roadmap" class="view-section">
+          <div class="roadmap-page-box">
+            <div class="glass-card roadmap-search-bar">
+              <div>
+                <h4>Interactive Career Trajectory</h4>
+                <p>Generate dynamic, AI-structured progression milestones.</p>
+              </div>
+              <div class="roadmap-input-wrap">
+                <input type="text" id="roadmap-role-input" class="form-control" placeholder="e.g. AI Systems Architect" value="Full Stack Cloud & AI Engineer" />
+                <button class="btn btn-primary" id="generate-roadmap-btn"><i class="fa-solid fa-bolt"></i> Generate</button>
+              </div>
+            </div>
+
+            <div class="glass-card">
+              <div class="timeline" id="roadmap-timeline-container"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 18. RISK & PREDICTOR -->
+        <section id="view-predictor" class="view-section">
+          <div class="predictor-wrapper">
+            <div class="glass-card">
+              <div class="card-header">
+                <div>
+                  <h4>Placement Risk Probability Engine</h4>
+                  <p class="card-sub">Simulate your academic metrics to determine interview shortlisting odds.</p>
+                </div>
+              </div>
+
+              <div class="slider-group">
+                <div class="slider-header">
+                  <label>Overall Attendance Record</label>
+                  <span class="slider-badge" id="lbl-att">88%</span>
+                </div>
+                <input type="range" id="pred-att" min="40" max="100" value="88" class="custom-range" />
+              </div>
+
+              <div class="slider-group">
+                <div class="slider-header">
+                  <label>Weekly Self-Directed Study / Coding Hours</label>
+                  <span class="slider-badge" id="lbl-hours">24 hrs</span>
+                </div>
+                <input type="range" id="pred-hours" min="2" max="60" value="24" class="custom-range" />
+              </div>
+
+              <div class="slider-group">
+                <div class="slider-header">
+                  <label>Average Mock Assessment Score</label>
+                  <span class="slider-badge" id="lbl-mock">82%</span>
+                </div>
+                <input type="range" id="pred-mock" min="20" max="100" value="82" class="custom-range" />
+              </div>
+
+              <button class="btn btn-primary btn-block btn-lg" id="run-predictor-btn">
+                <i class="fa-solid fa-chart-line"></i> Recompute Risk Vector
+              </button>
+
+              <div id="predictor-output" class="predictor-card-result"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 19. GOALS TRACKER -->
+        <section id="view-goals" class="view-section">
+          <div class="goals-wrapper">
+            <div class="glass-card">
+              <div class="card-header">
+                <div>
+                  <h4>Milestone & Target Execution</h4>
+                  <p class="card-sub">Break down major placement and academic objectives into measurable items.</p>
+                </div>
+              </div>
+
+              <div class="add-goal-bar">
+                <input type="text" id="goal-input" class="form-control" placeholder="Target item (e.g. Master Floyd-Warshall Algorithm)..." />
+                <button class="btn btn-primary" id="add-goal-btn"><i class="fa-solid fa-plus"></i> Add Goal</button>
+              </div>
+
+              <ul id="goals-list" class="goals-collection"></ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- 20. PLACEMENT & INTERNSHIP HUB -->
+        <section id="view-tracker" class="view-section">
+          <div class="glass-card">
+            <div class="card-header">
+              <div>
+                <h4>Placement & Internship Applications</h4>
+                <p class="card-sub">Track recruitment rounds, test schedules, and offer milestones.</p>
+              </div>
+              <div class="action-btns">
+                <button class="btn btn-outline" id="btn-export-placement-report"><i class="fa-solid fa-file-pdf"></i> Export Placement Log</button>
+                <button class="btn btn-primary" id="add-job-btn"><i class="fa-solid fa-plus"></i> New Application</button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="placement-table">
+                <thead>
+                  <tr>
+                    <th>Target Enterprise</th>
+                    <th>Role Spec</th>
+                    <th>Current Status</th>
+                    <th>Application Date</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="placements-table-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 21. CERTIFICATE VAULT -->
+        <section id="view-vault" class="view-section">
+          <div class="glass-card vault-box">
+            <div class="card-header">
+              <div>
+                <h4>Verified Academic & Technical Credentials</h4>
+                <p class="card-sub">Store and preview your verified professional certifications.</p>
+              </div>
+            </div>
+
+            <div class="vault-input-grid">
+              <input type="text" id="cert-title" class="form-control" placeholder="Certificate Name (e.g. AWS Certified Developer)" />
+              <input type="text" id="cert-issuer" class="form-control" placeholder="Issuing Entity" />
+              <button class="btn btn-primary" id="add-cert-btn"><i class="fa-solid fa-upload"></i> Save Credential</button>
+            </div>
+
+            <div id="certs-grid" class="certs-grid"></div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Toast Notification Hub -->
+  <div id="toast-container"></div>
+
+  <!-- External Script -->
+  <script src="app.js"></script>
+</body>
+</html>
